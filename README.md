@@ -19,6 +19,9 @@ import numpy as np
 import nltk
 from nltk.corpus import wordnet as wn
 import pandas as pd
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
 
 
 def convert_tag(tag):
@@ -79,6 +82,13 @@ doc2 = 'Use this function to see if your code in doc_to_synsets \
 test_document_path_similarity(doc1, doc2)
 ```
 
+
+
+
+    0.554265873015873
+
+
+
 <br>
 `paraphrases` is a DataFrame which is provided with this repository. It contains the following columns: `Quality`, `D1`, and `D2`.
 
@@ -89,6 +99,71 @@ test_document_path_similarity(doc1, doc2)
 paraphrases = pd.read_csv('paraphrases.csv')
 paraphrases.head()
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Quality</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Ms Stewart, the chief executive, was not expec...</td>
+      <td>Ms Stewart, 61, its chief executive officer an...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>After more than two years' detention under the...</td>
+      <td>After more than two years in detention by the ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>"It still remains to be seen whether the reven...</td>
+      <td>"It remains to be seen whether the revenue rec...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>And it's going to be a wild ride," said Allan ...</td>
+      <td>Now the rest is just mechanical," said Allan H...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>The cards are issued by Mexico's consulates to...</td>
+      <td>The card is issued by Mexico's consulates to i...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 
 ### Find the most similar documents
 
@@ -106,7 +181,18 @@ def most_similar_docs():
     similarity_score_list = np.array(similarity_score_list)
     t = np.argmax(similarity_score_list)
     return (paraphrases['D1'].iloc[t], paraphrases['D2'].iloc[t], similarity_score_list[t])
+
+most_similar_docs()
 ```
+
+
+
+
+    ('"Indeed, Iran should be put on notice that efforts to try to remake Iraq in their image will be aggressively put down," he said.',
+     '"Iran should be on notice that attempts to remake Iraq in Iran\'s image will be aggressively put down," he said.\n',
+     0.9753086419753086)
+
+
 
 ### Compare document_path_similarity function with labels
 
@@ -123,7 +209,16 @@ def label_accuracy():
         similarity_score_list.append(document_path_similarity(row['D1'], row['D2']))
     similarity_score_list = [1 if i>0.75 else 0 for i in similarity_score_list]
     return accuracy_score(paraphrases['Quality'],similarity_score_list)
+
+label_accuracy()
 ```
+
+
+
+
+    0.8
+
+
 
 .
 
@@ -158,7 +253,35 @@ Then, I Using `ldamodel` model to find a list of the 10 topics and their 10 most
 def lda_topics():
     
     return ldamodel.print_topics(num_topics =10, num_words =10)
+
+lda_topics()
 ```
+
+
+
+
+    [(0,
+      '0.056*"edu" + 0.043*"com" + 0.033*"thanks" + 0.022*"mail" + 0.021*"know" + 0.020*"does" + 0.014*"info" + 0.012*"monitor" + 0.010*"looking" + 0.010*"don"'),
+     (1,
+      '0.024*"ground" + 0.018*"current" + 0.018*"just" + 0.013*"want" + 0.013*"use" + 0.011*"using" + 0.011*"used" + 0.010*"power" + 0.010*"speed" + 0.010*"output"'),
+     (2,
+      '0.061*"drive" + 0.042*"disk" + 0.033*"scsi" + 0.030*"drives" + 0.028*"hard" + 0.028*"controller" + 0.027*"card" + 0.020*"rom" + 0.018*"floppy" + 0.017*"bus"'),
+     (3,
+      '0.023*"time" + 0.015*"atheism" + 0.014*"list" + 0.013*"left" + 0.012*"alt" + 0.012*"faq" + 0.012*"probably" + 0.011*"know" + 0.011*"send" + 0.010*"months"'),
+     (4,
+      '0.025*"car" + 0.016*"just" + 0.014*"don" + 0.014*"bike" + 0.012*"good" + 0.011*"new" + 0.011*"think" + 0.010*"year" + 0.010*"cars" + 0.010*"time"'),
+     (5,
+      '0.030*"game" + 0.027*"team" + 0.023*"year" + 0.017*"games" + 0.016*"play" + 0.012*"season" + 0.012*"players" + 0.012*"win" + 0.011*"hockey" + 0.011*"good"'),
+     (6,
+      '0.017*"information" + 0.014*"help" + 0.014*"medical" + 0.012*"new" + 0.012*"use" + 0.012*"000" + 0.012*"research" + 0.011*"university" + 0.010*"number" + 0.010*"program"'),
+     (7,
+      '0.022*"don" + 0.021*"people" + 0.018*"think" + 0.017*"just" + 0.012*"say" + 0.011*"know" + 0.011*"does" + 0.011*"good" + 0.010*"god" + 0.009*"way"'),
+     (8,
+      '0.034*"use" + 0.023*"apple" + 0.020*"power" + 0.016*"time" + 0.015*"data" + 0.015*"software" + 0.012*"pin" + 0.012*"memory" + 0.012*"simms" + 0.011*"port"'),
+     (9,
+      '0.068*"space" + 0.036*"nasa" + 0.021*"science" + 0.020*"edu" + 0.019*"data" + 0.017*"shuttle" + 0.015*"launch" + 0.015*"available" + 0.014*"center" + 0.014*"sci"')]
+
+
 
 ### Testing a new document
 
@@ -181,6 +304,26 @@ def topic_distribution():
     test_corpus = gensim.matutils.Sparse2Corpus(test_x, documents_columns=False)
     return list(ldamodel[test_corpus])[0]
 
+topic_distribution()
 ```
 
 
+
+
+    [(0, 0.020003108),
+     (1, 0.020003324),
+     (2, 0.020001281),
+     (3, 0.4967472),
+     (4, 0.020004038),
+     (5, 0.020004129),
+     (6, 0.020002972),
+     (7, 0.020002645),
+     (8, 0.020003129),
+     (9, 0.34322822)]
+
+
+
+
+```python
+
+```
