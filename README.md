@@ -4,14 +4,9 @@
 This project has two sections. The first section develops an algorithm to find similar documents in a document dataset, using `WordNet` and `path_similarity`. The second section develops a topic modeling algorithm. It uses Gensim's LDA (Latent Dirichlet Allocation) to identify 10 topics in a text dataset and the model is used to label new text documents. 
 
 
-This project is part of Applied Data Science with Python Specialization program at the University of Michigan. The program available from [here](https://www.coursera.org/learn/python-text-mining) and [here](https://www.coursera.org/learn/python-text-mining/resources/d9pwm) . This code is only uploaded for educational purposes and it should not be used for submitting any homework or assignment.
-
-
 ## Document Similarity
 
 This section develops a set of functions that calculates the similarity between two documents by path_similarity and pos_tag. I use `convert_tag` function to convert nltk.pos_tag to the tag used by wordnet.synsets. Then, `doc_to_synsets` function extracts synsets, and `similarity_score` function calculates the maximum similarity between synsets by path_similarity. These two functions are used by `document_path_similarity` to find the path similarity between two documents.
-
-
 
 
 ```python
@@ -25,7 +20,7 @@ nltk.download('wordnet')
 
 
 def convert_tag(tag):
-    
+
     tag_dict = {'N': 'n', 'J': 'a', 'R': 'r', 'V': 'v'}
     try:
         return tag_dict[tag[0]]
@@ -71,8 +66,6 @@ def document_path_similarity(doc1, doc2):
 Use this function calculates similarity score between doc1 and doc2.
 
 
-
-
 ```python
 def test_document_path_similarity(doc1, doc2):
     return document_path_similarity(doc1, doc2)
@@ -82,16 +75,11 @@ doc2 = 'Use this function to see if your code in doc_to_synsets \
 test_document_path_similarity(doc1, doc2)
 ```
 
-
-
-
     0.554265873015873
-
 
 
 <br>
 `paraphrases` is a DataFrame which is provided with this repository. It contains the following columns: `Quality`, `D1`, and `D2`.
-
 `Quality` is an indicator variable which indicates if the two documents `D1` and `D2` are paraphrases of one another (1 for paraphrase, 0 for not paraphrase).
 
 
@@ -327,3 +315,5 @@ topic_distribution()
 ```python
 
 ```
+
+This project is part of Applied Data Science with Python Specialization program at the University of Michigan. The program available from [here](https://www.coursera.org/learn/python-text-mining) and [here](https://www.coursera.org/learn/python-text-mining/resources/d9pwm) . This code is only uploaded for educational purposes and it should not be used for submitting any homework or assignment.
